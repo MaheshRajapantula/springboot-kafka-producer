@@ -2,6 +2,7 @@ package com.learning.kafka.springbootkafkaproducer.controller;
 
 
 //import com.learning.kafka.springbootkafkaproducer.Producer;
+import com.learning.kafka.springbootkafkaproducer.model.Urn;
 import com.learning.kafka.springbootkafkaproducer.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -14,11 +15,12 @@ public class Controller {
     @Autowired
     KafkaTemplate<String, User> kafkaTemplate;
 
+
 //    @Autowired
 //    private Producer producer;
 
     @Autowired
-    KafkaTemplate<String, String> kafkaTemplate1;
+    KafkaTemplate<String, Urn> kafkaTemplate1;
 
     private static final String TOPIC = "Kafka_Topic";
 
@@ -31,10 +33,11 @@ public class Controller {
         return "Published Successfully";
     }
 
-    @GetMapping("/publish/{message}")
-    public String post(@PathVariable("message") final String message){
+    @GetMapping(value = "/publish/urn", consumes = {"application/json"}, produces = {"application/json"})
+    public String post(@RequestBody final Urn urn){
 
-        kafkaTemplate1.send(TOPIC, message);
+        kafkaTemplate1.send(TOPIC, urn);
+        System.out.println(urn.getUrn());
 
         return "Published Successfully";
     }

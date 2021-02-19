@@ -1,5 +1,6 @@
 package com.learning.kafka.springbootkafkaproducer.config;
 
+import com.learning.kafka.springbootkafkaproducer.model.Urn;
 import com.learning.kafka.springbootkafkaproducer.model.User;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -33,6 +34,11 @@ public class KafkaConfiguration {
     }
 
     @Bean
+    public KafkaTemplate<String, Urn> kafkaTemplate1() {
+        return new KafkaTemplate<String, Urn>(producerFactoryJson());
+    }
+
+    @Bean
     public ProducerFactory producerFactory(){
         Map<String, Object> config = new HashMap<>();
 
@@ -41,11 +47,6 @@ public class KafkaConfiguration {
         config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 
         return new DefaultKafkaProducerFactory<>(config);
-    }
-
-    @Bean
-    public KafkaTemplate<String, String> kafkaTemplate1() {
-        return new KafkaTemplate<>(producerFactory());
     }
 
 
